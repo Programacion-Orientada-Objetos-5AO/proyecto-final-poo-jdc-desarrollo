@@ -37,7 +37,8 @@ public class Personaje {
     private int xp;
 
     @NotBlank(message = "Los atributos son obligatorios")
-    private HashMap<String , Integer> atributos;
+    private HashMap<String , Integer> atributos;//temporal
 
+    private HashMap<String , String> inventario;//temporal
     
 }
