@@ -1,18 +1,23 @@
 package ar.edu.huergo.jdecadido.rpg.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
+import ar.edu.huergo.jdecadido.rpg.dto.MostrarPersonajeDto;
 import ar.edu.huergo.jdecadido.rpg.dto.PersonajeDto;
 import ar.edu.huergo.jdecadido.rpg.entity.Personaje;
 
 @Component
-public class personajeMapper {
+public class PersonajeMapper {
     
-    public PersonajeDto toDTO(Personaje personaje) {
+    public MostrarPersonajeDto toDTO(Personaje personaje) {
         if (personaje == null) {
             return null;
         }
-        return new PersonajeDto(personaje.getId() , personaje.getNombre(), personaje.getNivel() , personaje.getXp() , personaje.getAtributos() , personaje.getInventario());
+        return new MostrarPersonajeDto(personaje.getId() , personaje.getNombre(), personaje.getNivel() , personaje.getXp() , personaje.getAtributos() , personaje.getInventario());
     }
 
     public Personaje toEntity(PersonajeDto dto) {
@@ -26,5 +31,12 @@ public class personajeMapper {
         personaje.setAtributos(dto.getAtributos());
         personaje.setInventario(dto.getInventario());
         return personaje;
+    }
+
+    public List<MostrarPersonajeDto> toDTOList(List<Personaje> personajes) {
+        if (personajes == null) {
+            return new ArrayList<>();
+        }
+        return personajes.stream().map(this::toDTO).collect(Collectors.toList());
     }
 }

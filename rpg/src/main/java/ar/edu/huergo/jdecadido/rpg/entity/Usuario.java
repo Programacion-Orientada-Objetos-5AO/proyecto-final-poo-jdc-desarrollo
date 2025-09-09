@@ -23,6 +23,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(nullable = false, unique = true, length = 100)
     @Email(message = "El nombre de usuario debe ser un email válido")
     @NotBlank(message = "El nombre de usuario es requerido")
