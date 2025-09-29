@@ -21,7 +21,7 @@ public class PersonajeService {
 
     public Personaje obtenerPersonajePorId(Long id) throws EntityNotFoundException{
         return personajeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Personaje  no encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Personaje no encontrado"));
     }
 
     public Personaje crearPersonaje(Personaje personaje) {

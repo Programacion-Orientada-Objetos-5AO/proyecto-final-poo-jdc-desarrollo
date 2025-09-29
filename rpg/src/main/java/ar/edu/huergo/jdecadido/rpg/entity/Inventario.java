@@ -1,5 +1,7 @@
 package ar.edu.huergo.jdecadido.rpg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,8 +29,9 @@ public class Inventario {
     @JoinColumn(name = "personaje_id")
     private Personaje personaje;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "item_id")
+    @JsonBackReference
     private Item item;
 
     private int cantidad;
