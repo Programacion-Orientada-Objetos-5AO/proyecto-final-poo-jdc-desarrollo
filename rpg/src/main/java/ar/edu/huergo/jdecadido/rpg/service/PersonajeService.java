@@ -33,8 +33,9 @@ public class PersonajeService {
         personajeExistente.setNombre(personaje.getNombre());
         personajeExistente.setNivel(personaje.getNivel());
         personajeExistente.setXp(personaje.getXp());
-        personajeExistente.setAtributos(personaje.getAtributos());
-        personajeExistente.setInventario(personaje.getInventario());
+        personajeExistente.getAtributos().clear();
+        personaje.getAtributos().forEach(a -> a.setPersonaje(personajeExistente));
+        personajeExistente.getAtributos().addAll(personaje.getAtributos());
         return personajeRepository.save(personajeExistente);
     }
 

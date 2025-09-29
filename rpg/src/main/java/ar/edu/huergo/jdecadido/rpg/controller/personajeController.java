@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import ar.edu.huergo.jdecadido.rpg.dto.CrearPersonajeDto;
 import ar.edu.huergo.jdecadido.rpg.dto.MostrarPersonajeDto;
 import ar.edu.huergo.jdecadido.rpg.entity.Personaje;
 import ar.edu.huergo.jdecadido.rpg.mapper.PersonajeMapper;
@@ -34,19 +35,19 @@ public class personajeController {
     @GetMapping
     public ResponseEntity<List<MostrarPersonajeDto>> obtenerTodosLosPersonajes() {
         List<Personaje> personajes = personajeService.obtenerTodosLosPersonajes();
-        List<MostrarPersonajeDto> platosDTO = personajeMapper.toDTOList(personajes);
-        return ResponseEntity.ok(platosDTO);
+        List<MostrarPersonajeDto> personjeDto = personajeMapper.toDTOList(personajes);
+        return ResponseEntity.ok(personjeDto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MostrarPersonajeDto> obtenerPersonajePorId(@PathVariable Long id) {
         Personaje personaje = personajeService.obtenerPersonajePorId(id);
-        MostrarPersonajeDto platoDTO = personajeMapper.toDTO(personaje);
-        return ResponseEntity.ok(platoDTO);
+        MostrarPersonajeDto personajeDto = personajeMapper.toDTO(personaje);
+        return ResponseEntity.ok(personajeDto);
     }
 
     @PostMapping
-    public ResponseEntity<MostrarPersonajeDto> crearPersonaje(@Valid @RequestBody MostrarPersonajeDto personajeDto) {
+    public ResponseEntity<MostrarPersonajeDto> crearPersonaje(@Valid @RequestBody CrearPersonajeDto personajeDto) {
         Personaje personaje = personajeMapper.toEntity(personajeDto);
         Personaje personajeCreado = personajeService.crearPersonaje(personaje);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -56,8 +57,8 @@ public class personajeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<MostrarPersonajeDto> actualizarPersonaje(@PathVariable Long id,
-            @Valid @RequestBody MostrarPersonajeDto personajeDTO) {
-        Personaje personaje = personajeMapper.toEntity(personajeDTO);
+            @Valid @RequestBody CrearPersonajeDto personajeDto) {
+        Personaje personaje = personajeMapper.toEntity(personajeDto);
         Personaje personajeActualizado =
                 personajeService.actualizarPersonaje(id, personaje);
         return ResponseEntity.ok(personajeMapper.toDTO(personajeActualizado));

@@ -1,11 +1,10 @@
 package ar.edu.huergo.jdecadido.rpg.dto;
 
-import java.util.HashMap;
+import java.util.List;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -32,9 +31,7 @@ public abstract  class PersonajeDto{
     @Max(100)
     private int xp;
 
-    @NotNull
-    @NotEmpty
-    private HashMap<String , Integer> atributos;//temporal
-
-    private HashMap<String , String> inventario;//temporal
+    private List<AtributoDto> atributos;
+    
+    private List<InventarioDto> inventario;
 }

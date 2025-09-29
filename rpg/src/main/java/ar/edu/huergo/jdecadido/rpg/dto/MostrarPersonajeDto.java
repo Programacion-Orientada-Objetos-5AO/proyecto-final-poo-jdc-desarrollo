@@ -1,6 +1,6 @@
 package ar.edu.huergo.jdecadido.rpg.dto;
 
-import java.util.HashMap;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MostrarPersonajeDto extends PersonajeDto {
     
-    public MostrarPersonajeDto(Long id , String nombre , int nivel , int xp , HashMap<String , Integer> atributos , HashMap<String , String> inventario){
+    public MostrarPersonajeDto(Long id , String nombre , int nivel , int xp , List<AtributoDto> atributos, List<InventarioDto> inventario){
         super(id, nombre, nivel, xp, atributos, inventario);
     }
 }

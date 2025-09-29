@@ -6,30 +6,45 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import ar.edu.huergo.jdecadido.rpg.dto.MostrarPersonajeDto;
-import ar.edu.huergo.jdecadido.rpg.dto.PersonajeDto;
-import ar.edu.huergo.jdecadido.rpg.entity.Personaje;
+import ar.edu.huergo.jdecadido.rpg.dto.*;
+import ar.edu.huergo.jdecadido.rpg.entity.*;
 
 @Component
 public class PersonajeMapper {
-    
+
     public MostrarPersonajeDto toDTO(Personaje personaje) {
-        if (personaje == null) {
-            return null;
-        }
-        return new MostrarPersonajeDto(personaje.getId() , personaje.getNombre(), personaje.getNivel() , personaje.getXp() , personaje.getAtributos() , personaje.getInventario());
+        if (personaje == null) return null;
+
+        List<AtributoDto> atributos = personaje.getAtributos().stream()
+                .map(a -> new AtributoDto(a.getNombre(), a.getValor()))
+                .collect(Collectors.toList());
+
+        List<InventarioDto> inventario = personaje.getInventario().stream()
+                .map(i -> new InventarioDto(
+                        i.getItem().getId(),
+                        i.getItem().getNombre(),
+                        i.getCantidad(),
+                        i.isEquipado()
+                ))
+                .collect(Collectors.toList());
+
+        return new MostrarPersonajeDto(
+                personaje.getId(),
+                personaje.getNombre(),
+                personaje.getNivel(),
+                personaje.getXp(),
+                atributos,
+                inventario
+        );
     }
 
-    public Personaje toEntity(PersonajeDto dto) {
-        if (dto == null) {
-            return null;
-        }
+    public Personaje toEntity(CrearPersonajeDto dto) {
+        if (dto == null) return null;
+
         Personaje personaje = new Personaje();
         personaje.setNombre(dto.getNombre());
         personaje.setNivel(dto.getNivel());
         personaje.setXp(dto.getXp());
-        personaje.setAtributos(dto.getAtributos());
-        personaje.setInventario(dto.getInventario());
         return personaje;
     }
 
