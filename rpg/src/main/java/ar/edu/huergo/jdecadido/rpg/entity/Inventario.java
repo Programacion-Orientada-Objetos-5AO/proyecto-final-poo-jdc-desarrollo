@@ -26,14 +26,15 @@ public class Inventario {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "personaje_id")
+    @JoinColumn(name = "personaje_id", nullable = false)
+    @JsonBackReference
     private Personaje personaje;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
     private int cantidad;
+    
     private boolean equipado; 
 }

@@ -1,5 +1,7 @@
 package ar.edu.huergo.jdecadido.rpg.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,16 +25,17 @@ public class Atributo {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     
-    @NotBlank
+    @NotBlank(message = "El nombre del atributo es obligatorio")
     private String nombre;
 
-    @Min(0)
-    @Max(100)
+    @Min(value = 0, message = "El valor mínimo es 0")
+    @Max(value = 100, message = "El valor máximo es 100")
     private int valor;
 
     @ManyToOne
     @JoinColumn(name = "personaje_id", nullable = false)
+    @JsonBackReference
     private Personaje personaje;
 }

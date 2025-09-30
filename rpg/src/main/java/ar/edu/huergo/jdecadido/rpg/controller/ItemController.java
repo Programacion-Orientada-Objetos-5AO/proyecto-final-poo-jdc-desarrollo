@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import ar.edu.huergo.jdecadido.rpg.dto.ItemDto;
 import ar.edu.huergo.jdecadido.rpg.entity.Item;
+import ar.edu.huergo.jdecadido.rpg.mapper.ItemMapper;
 import ar.edu.huergo.jdecadido.rpg.service.ItemService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/items")
@@ -25,31 +28,39 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private ItemMapper itemMapper;
+
     @GetMapping
-    public ResponseEntity<List<Item>> listarItems() {
-        return ResponseEntity.ok(itemService.obtenerTodosLosItems());
+    public ResponseEntity<List<ItemDto>> listarItems() {
+        List<Item> items = itemService.obtenerTodosLosItems();
+        List<ItemDto> itemsDto = itemMapper.toDTOList(items);
+        return ResponseEntity.ok(itemsDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Item> obtenerItem(@PathVariable Long id) {
+    public ResponseEntity<ItemDto> obtenerItem(@PathVariable Long id) {
         Item item = itemService.obtenerItemPorId(id);
-        return ResponseEntity.ok(item);
+        ItemDto itemDto = itemMapper.toDTO(item);
+        return ResponseEntity.ok(itemDto);
     }
 
     @PostMapping
-    public ResponseEntity<Item> crearItem(@RequestBody Item item) {
+    public ResponseEntity<ItemDto> crearItem(@Valid @RequestBody ItemDto itemDto) {
+        Item item = itemMapper.toEntity(itemDto);
         Item creado = itemService.crearItem(item);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(creado.getId())
                 .toUri();
-        return ResponseEntity.created(location).body(creado);
+        return ResponseEntity.created(location).body(itemMapper.toDTO(creado));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Item> actualizarItem(@PathVariable Long id, @RequestBody Item item) {
+    public ResponseEntity<ItemDto> actualizarItem(@PathVariable Long id, @Valid @RequestBody ItemDto itemDto) {
+        Item item = itemMapper.toEntity(itemDto);
         Item actualizado = itemService.actualizarItem(id, item);
-        return ResponseEntity.ok(actualizado);
+        return ResponseEntity.ok(itemMapper.toDTO(actualizado));
     }
 
     @DeleteMapping("/{id}")

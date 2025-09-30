@@ -1,8 +1,10 @@
+
 package ar.edu.huergo.jdecadido.rpg.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -12,14 +14,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.http.MediaType;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ar.edu.huergo.jdecadido.rpg.repository.UsuarioRepository;
-
 
 @Configuration
 @EnableMethodSecurity
@@ -30,11 +31,22 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                // Endpoints públicos (sin autenticación)
+                .requestMatchers("/api/auth/login", "/api/usuarios/registrar").permitAll()
+                
+                // Endpoints protegidos para personajes (GET requiere ADMIN o CLIENTE)
                 .requestMatchers(HttpMethod.GET, "/api/personajes/**").hasAnyRole("ADMIN", "CLIENTE")
-                /** .requestMatchers("/api/ingredientes/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/platos/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/platos/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/platos/**").hasRole("ADMIN")por ahora no*/
+                .requestMatchers(HttpMethod.POST, "/api/personajes/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/personajes/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/personajes/**").hasRole("ADMIN")
+                
+                // Endpoints protegidos para items
+                .requestMatchers(HttpMethod.GET, "/api/items/**").hasAnyRole("ADMIN", "CLIENTE")
+                .requestMatchers(HttpMethod.POST, "/api/items/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/items/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/items/**").hasRole("ADMIN")
+                
+                // Resto de endpoints requieren autenticación
                 .anyRequest().authenticated()
             )
             .exceptionHandling(exceptions -> exceptions
@@ -102,4 +114,4 @@ public class SecurityConfig {
             )
             .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
     }
-}   
+}
