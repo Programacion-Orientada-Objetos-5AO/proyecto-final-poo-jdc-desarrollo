@@ -35,7 +35,12 @@ public class Atributo {
     private int valor;
 
     @ManyToOne
-    @JoinColumn(name = "personaje_id", nullable = false)
+    @JoinColumn(name = "personaje_id", nullable = true)
     @JsonBackReference
     private Personaje personaje;
+
+    @ManyToOne
+    @JoinColumn(name = "enemigo_id", nullable = true)
+    @JsonBackReference
+    private Enemigo enemigo;
 }
