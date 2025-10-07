@@ -119,11 +119,11 @@ public class EnemigoController {
      * Aplica daño a un enemigo
      * POST /api/enemigos/{id}/danio?cantidad=20
      */
-    @PostMapping("/{id}/daño")
-    public ResponseEntity<MostrarEnemigoDto> aplicarDaño(
+    @PostMapping("/{id}/danio")
+    public ResponseEntity<MostrarEnemigoDto> aplicarDanio(
             @PathVariable Long id,
             @RequestParam int cantidad) {
-        Enemigo enemigo = enemigoService.aplicarDaño(id, cantidad);
+        Enemigo enemigo = enemigoService.aplicarDanio(id, cantidad);
         return ResponseEntity.ok(enemigoMapper.toDTO(enemigo));
     }
 

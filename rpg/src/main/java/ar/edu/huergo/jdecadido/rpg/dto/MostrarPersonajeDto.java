@@ -2,16 +2,22 @@ package ar.edu.huergo.jdecadido.rpg.dto;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class MostrarPersonajeDto extends PersonajeDto {
+@AllArgsConstructor
+public class MostrarPersonajeDto {
     
-    public MostrarPersonajeDto(Long id , String nombre , int nivel , int xp , List<AtributoDto> atributos, List<InventarioDto> inventario){
-        super(id, nombre, nivel, xp, atributos, inventario);
-    }
+    private Long id;
+    private String nombre;
+    private int nivel;
+    private int xp;
+    private int vidaMax;
+    private int vidaActual;
+    private boolean estaVivo;
+    private List<AtributoDto> atributos;
+    private List<InventarioDto> inventario;
 }

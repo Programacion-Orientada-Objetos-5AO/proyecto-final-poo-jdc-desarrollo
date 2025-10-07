@@ -35,6 +35,7 @@ public class AtributoService {
         return atributoRepository.save(atributoExistente);
     }
 
+
     public void eliminarAtributo(Long id) throws EntityNotFoundException {
         Atributo atributo = obtenerPorId(id);
         atributoRepository.delete(atributo);

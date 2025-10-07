@@ -30,7 +30,12 @@ public class CrearPersonajeDto {
     @Min(value = 0, message = "La experiencia no puede ser negativa")
     @Max(value = 100, message = "La experiencia máxima es 100")
     private int xp;
+
+    @NotNull(message = "La vida máxima es obligatoria")
+    @Min(value = 1, message = "La vida máxima mínima es 1")
+    private int vidaMax;
     
+    // Lista opcional de atributos al crear el personaje
     @Valid
     private List<AtributoDto> atributos = new ArrayList<>();
 }

@@ -96,7 +96,7 @@ public class EnemigoService {
      * Aplica daño a un enemigo
      */
     @Transactional
-    public Enemigo aplicarDaño(Long id, int danio) throws EntityNotFoundException {
+    public Enemigo aplicarDanio(Long id, int danio) throws EntityNotFoundException {
         Enemigo enemigo = obtenerEnemigoPorId(id);
         enemigo.recibirDanio(danio);
         return enemigoRepository.save(enemigo);

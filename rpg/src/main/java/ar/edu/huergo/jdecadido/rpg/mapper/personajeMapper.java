@@ -6,12 +6,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import ar.edu.huergo.jdecadido.rpg.dto.AtributoDto;
-import ar.edu.huergo.jdecadido.rpg.dto.CrearPersonajeDto;
-import ar.edu.huergo.jdecadido.rpg.dto.InventarioDto;
-import ar.edu.huergo.jdecadido.rpg.dto.MostrarPersonajeDto;
-import ar.edu.huergo.jdecadido.rpg.entity.Atributo;
-import ar.edu.huergo.jdecadido.rpg.entity.Personaje;
+import ar.edu.huergo.jdecadido.rpg.dto.*;
+import ar.edu.huergo.jdecadido.rpg.entity.*;
 
 @Component
 public class PersonajeMapper {
@@ -40,6 +36,9 @@ public class PersonajeMapper {
                 personaje.getNombre(),
                 personaje.getNivel(),
                 personaje.getXp(),
+                personaje.getVidaMax(),
+                personaje.getVidaActual(),
+                personaje.estaVivo(),
                 atributos,
                 inventario
         );
@@ -47,7 +46,7 @@ public class PersonajeMapper {
 
     /**
      * Convierte un DTO de creación a entidad Personaje
-     * Incluye el mapeo de atributos si están presentes
+     * La vida actual se inicializa igual a la vida máxima
      */
     public Personaje toEntity(CrearPersonajeDto dto) {
         if (dto == null) return null;
@@ -56,6 +55,8 @@ public class PersonajeMapper {
         personaje.setNombre(dto.getNombre());
         personaje.setNivel(dto.getNivel());
         personaje.setXp(dto.getXp());
+        personaje.setVidaMax(dto.getVidaMax());
+        personaje.setVidaActual(dto.getVidaMax()); // Inicia con vida completa
         
         // Mapear atributos si existen
         if (dto.getAtributos() != null && !dto.getAtributos().isEmpty()) {
@@ -64,7 +65,8 @@ public class PersonajeMapper {
                     Atributo atributo = new Atributo();
                     atributo.setNombre(aDto.getNombre());
                     atributo.setValor(aDto.getValor());
-                    atributo.setPersonaje(personaje);  // IMPORTANTE: establecer la relación bidireccional
+                    atributo.setPersonaje(personaje);  // Establecer relación bidireccional
+                    atributo.setEnemigo(null);         // No es de enemigo
                     return atributo;
                 })
                 .collect(Collectors.toList());
