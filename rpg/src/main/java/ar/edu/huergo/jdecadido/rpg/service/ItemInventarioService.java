@@ -11,7 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
-public class InventarioService {
+public class ItemInventarioService {
 
     @Autowired
     private PersonajeRepository personajeRepository;
@@ -23,27 +23,27 @@ public class InventarioService {
      * Agrega un item al inventario de un personaje
      */
     @Transactional
-    public Inventario agregarItem(Long personajeId, Long itemId, int cantidad) {
+    public ItemInventario agregarItem(Long personajeId, Long itemId, int cantidad) {
         Personaje personaje = personajeRepository.findById(personajeId)
                 .orElseThrow(() -> new EntityNotFoundException("Personaje no encontrado con id: " + personajeId));
 
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Item no encontrado con id: " + itemId));
 
-        // Verificar si el item ya existe en el inventario
-        Inventario invExistente = personaje.getInventario().stream()
+        
+        ItemInventario invExistente = personaje.getInventario().stream()
                 .filter(inv -> inv.getItem().getId().equals(itemId))
                 .findFirst()
                 .orElse(null);
 
         if (invExistente != null) {
-            // Si ya existe, solo incrementar la cantidad
+            
             invExistente.setCantidad(invExistente.getCantidad() + cantidad);
             personajeRepository.save(personaje);
             return invExistente;
         } else {
-            // Si no existe, crear nuevo
-            Inventario inv = new Inventario();
+            
+            ItemInventario inv = new ItemInventario();
             inv.setPersonaje(personaje);
             inv.setItem(item);
             inv.setCantidad(cantidad);
@@ -75,7 +75,7 @@ public class InventarioService {
     /**
      * Busca un item específico en el inventario de un personaje
      */
-    public Inventario buscarItem(Long personajeId, Long itemId) {
+    public ItemInventario buscarItem(Long personajeId, Long itemId) {
         Personaje personaje = personajeRepository.findById(personajeId)
                 .orElseThrow(() -> new EntityNotFoundException("Personaje no encontrado con id: " + personajeId));
 
@@ -89,16 +89,16 @@ public class InventarioService {
      * Equipa o desequipa un item del inventario
      */
     @Transactional
-    public Inventario equiparItem(Long personajeId, Long itemId) {
+    public ItemInventario equiparItem(Long personajeId, Long itemId) {
         Personaje personaje = personajeRepository.findById(personajeId)
                 .orElseThrow(() -> new EntityNotFoundException("Personaje no encontrado con id: " + personajeId));
 
-        Inventario inv = personaje.getInventario().stream()
+        ItemInventario inv = personaje.getInventario().stream()
                 .filter(i -> i.getItem().getId().equals(itemId))
                 .findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Item no encontrado en el inventario"));
 
-        // Toggle equipado
+        
         inv.setEquipado(!inv.isEquipado());
         personajeRepository.save(personaje);
         
@@ -120,7 +120,7 @@ public class InventarioService {
     /**
      * Lista todo el inventario de un personaje
      */
-    public List<Inventario> listarInventario(Long personajeId) {
+    public List<ItemInventario> listarInventario(Long personajeId) {
         Personaje personaje = personajeRepository.findById(personajeId)
                 .orElseThrow(() -> new EntityNotFoundException("Personaje no encontrado con id: " + personajeId));
 

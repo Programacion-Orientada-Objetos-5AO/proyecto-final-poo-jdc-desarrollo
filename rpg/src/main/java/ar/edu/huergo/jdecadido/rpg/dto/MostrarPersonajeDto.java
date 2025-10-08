@@ -19,5 +19,5 @@ public class MostrarPersonajeDto {
     private int vidaActual;
     private boolean estaVivo;
     private List<AtributoDto> atributos;
-    private List<InventarioDto> inventario;
+    private List<ItemInventarioDto> inventario;
 }

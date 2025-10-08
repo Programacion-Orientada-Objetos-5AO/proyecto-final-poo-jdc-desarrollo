@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Inventario {
+public class ItemInventario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

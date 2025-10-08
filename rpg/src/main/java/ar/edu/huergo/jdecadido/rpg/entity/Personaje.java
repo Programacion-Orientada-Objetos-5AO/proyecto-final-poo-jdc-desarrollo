@@ -59,7 +59,7 @@ public class Personaje {
 
     @OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Inventario> inventario = new ArrayList<>();
+    private List<ItemInventario> inventario = new ArrayList<>();
 
     /**
      * Verifica si el personaje está vivo

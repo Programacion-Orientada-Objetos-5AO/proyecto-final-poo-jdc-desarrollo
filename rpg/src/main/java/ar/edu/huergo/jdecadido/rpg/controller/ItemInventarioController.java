@@ -26,10 +26,10 @@ import jakarta.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/personajes/{personajeId}/inventario")
-public class InventarioController {
+public class ItemInventarioController {
 
     @Autowired
-    private InventarioService inventarioService;
+    private ItemInventarioService inventarioService;
 
     /**
      * Lista todos los items en el inventario de un personaje
@@ -40,7 +40,7 @@ public class InventarioController {
         List<Inventario> inventario = inventarioService.listarInventario(personajeId);
         
         List<InventarioDto> inventarioDto = inventario.stream()
-            .map(inv -> new InventarioDto(
+            .map(inv -> new ItemInventarioDto(
                 inv.getItem().getId(),
                 inv.getItem().getNombre(),
                 inv.getCantidad(),
@@ -60,9 +60,9 @@ public class InventarioController {
             @PathVariable Long personajeId,
             @Valid @RequestBody AgregarItemInventarioDto dto) {
         
-        Inventario inv = inventarioService.agregarItem(personajeId, dto.getItemId(), dto.getCantidad());
+        ItemInventario inv = inventarioService.agregarItem(personajeId, dto.getItemId(), dto.getCantidad());
         
-        InventarioDto inventarioDto = new InventarioDto(
+        ItemInventarioDto inventarioDto = new ItemInventarioDto(
             inv.getItem().getId(),
             inv.getItem().getNombre(),
             inv.getCantidad(),
@@ -81,9 +81,9 @@ public class InventarioController {
             @PathVariable Long personajeId,
             @PathVariable Long itemId) {
         
-        Inventario inv = inventarioService.equiparItem(personajeId, itemId);
+        ItemInventario inv = inventarioService.equiparItem(personajeId, itemId);
         
-        InventarioDto inventarioDto = new InventarioDto(
+        ItemInventarioDto inventarioDto = new ItemInventarioDto(
             inv.getItem().getId(),
             inv.getItem().getNombre(),
             inv.getCantidad(),
@@ -102,9 +102,9 @@ public class InventarioController {
             @PathVariable Long personajeId,
             @PathVariable Long itemId) {
         
-        Inventario inv = inventarioService.buscarItem(personajeId, itemId);
+        ItemInventario inv = inventarioService.buscarItem(personajeId, itemId);
         
-        InventarioDto inventarioDto = new InventarioDto(
+        ItemInventarioDto inventarioDto = new ItemInventarioDto(
             inv.getItem().getId(),
             inv.getItem().getNombre(),
             inv.getCantidad(),

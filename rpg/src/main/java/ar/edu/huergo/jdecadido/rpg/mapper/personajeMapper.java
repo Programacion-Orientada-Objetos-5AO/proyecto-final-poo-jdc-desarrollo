@@ -22,8 +22,8 @@ public class PersonajeMapper {
                 .map(a -> new AtributoDto(a.getNombre(), a.getValor()))
                 .collect(Collectors.toList());
 
-        List<InventarioDto> inventario = personaje.getInventario().stream()
-                .map(i -> new InventarioDto(
+        List<ItemInventarioDto> inventario = personaje.getInventario().stream()
+                .map(i -> new ItemInventarioDto(
                         i.getItem().getId(),
                         i.getItem().getNombre(),
                         i.getCantidad(),
