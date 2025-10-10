@@ -43,5 +43,5 @@ public abstract class PersonajeDto {
 
     private List<AtributoDto> atributos;
     
-    private List<InventarioDto> inventario;
+    private List<ItemInventarioDto> inventario;
 }

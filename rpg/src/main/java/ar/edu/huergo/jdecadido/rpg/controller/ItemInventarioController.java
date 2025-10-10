@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.huergo.jdecadido.rpg.dto.AgregarItemInventarioDto;
-import ar.edu.huergo.jdecadido.rpg.dto.InventarioDto;
-import ar.edu.huergo.jdecadido.rpg.entity.Inventario;
-import ar.edu.huergo.jdecadido.rpg.service.InventarioService;
+import ar.edu.huergo.jdecadido.rpg.dto.ItemInventarioDto;
+import ar.edu.huergo.jdecadido.rpg.entity.ItemInventario;
+import ar.edu.huergo.jdecadido.rpg.service.ItemInventarioService;
 import jakarta.validation.Valid;
 
 /**
@@ -36,10 +36,10 @@ public class ItemInventarioController {
      * GET /api/personajes/{personajeId}/inventario
      */
     @GetMapping
-    public ResponseEntity<List<InventarioDto>> listarInventario(@PathVariable Long personajeId) {
-        List<Inventario> inventario = inventarioService.listarInventario(personajeId);
+    public ResponseEntity<List<ItemInventarioDto>> listarInventario(@PathVariable Long personajeId) {
+        List<ItemInventario> inventario = inventarioService.listarInventario(personajeId);
         
-        List<InventarioDto> inventarioDto = inventario.stream()
+        List<ItemInventarioDto> inventarioDto = inventario.stream()
             .map(inv -> new ItemInventarioDto(
                 inv.getItem().getId(),
                 inv.getItem().getNombre(),
@@ -56,7 +56,7 @@ public class ItemInventarioController {
      * POST /api/personajes/{personajeId}/inventario
      */
     @PostMapping
-    public ResponseEntity<InventarioDto> agregarItem(
+    public ResponseEntity<ItemInventarioDto> agregarItem(
             @PathVariable Long personajeId,
             @Valid @RequestBody AgregarItemInventarioDto dto) {
         
@@ -77,7 +77,7 @@ public class ItemInventarioController {
      * PUT /api/personajes/{personajeId}/inventario/{itemId}/equipar
      */
     @PutMapping("/{itemId}/equipar")
-    public ResponseEntity<InventarioDto> equiparItem(
+    public ResponseEntity<ItemInventarioDto> equiparItem(
             @PathVariable Long personajeId,
             @PathVariable Long itemId) {
         
@@ -98,7 +98,7 @@ public class ItemInventarioController {
      * GET /api/personajes/{personajeId}/inventario/{itemId}
      */
     @GetMapping("/{itemId}")
-    public ResponseEntity<InventarioDto> buscarItem(
+    public ResponseEntity<ItemInventarioDto> buscarItem(
             @PathVariable Long personajeId,
             @PathVariable Long itemId) {
         
